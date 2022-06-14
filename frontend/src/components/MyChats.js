@@ -20,12 +20,12 @@ const MyChats = ({ fetchAgain }) => {
   const toast = useToast();
   // const history = useHistory();
 
-  console.log(user._id);
-  console.log(loggedUser._id);
+  // console.log(user._id);
+  // console.log(loggedUser._id);
 
   const fetchChats = async () => {
-    console.log(user._id);
-    console.log(loggedUser._id);
+    // console.log(user._id);
+    // console.log(loggedUser._id);
     try {
       const config = {
         headers: {
@@ -34,7 +34,7 @@ const MyChats = ({ fetchAgain }) => {
       };
 
       const { data } = await axios.get("/api/chat", config);
-      console.log(data);
+      // console.log(data);
       setChats(data);
     } catch (error) {
       toast({
@@ -55,9 +55,9 @@ const MyChats = ({ fetchAgain }) => {
     // eslint-disable-next-line
   }, [fetchAgain]);
 
-  console.log(user._id);
-  console.log(loggedUser._id);
-  console.log(chats);
+  // console.log(user._id);
+  // console.log(loggedUser._id);
+  // console.log(chats);
   // if (!chats) history.push("/");
 
   return (
