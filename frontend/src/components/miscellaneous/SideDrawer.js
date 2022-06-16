@@ -103,8 +103,8 @@ function SideDrawer() {
       setSearchResult(data);
     } catch (error) {
       toast({
-        title: "Error Occured!",
-        description: "Failed to Load the Search Results",
+        title: "Failed to Load the Search Results!",
+        description: "Please Refresh Page...",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -194,7 +194,7 @@ function SideDrawer() {
                 size="sm"
                 cursor="pointer"
                 name={user.name}
-                src={user.name}
+                // src={user.name}
               />
             </MenuButton>
             <MenuList>

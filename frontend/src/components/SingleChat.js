@@ -62,13 +62,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       socket.emit("join chat", selectedChat._id);
     } catch (error) {
       toast({
-        title: "Error Occured!",
-        description: "Failed to Load the Messages",
+        title: "Failed to Load the Messages!",
+        description: "Please Refresh Page...",
         status: "error",
         duration: 5000,
         isClosable: true,
         position: "bottom",
       });
+      setSelectedChat(null);
     }
   };
 
@@ -95,8 +96,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         setMessages([...messages, data]);
       } catch (error) {
         toast({
-          title: "Error Occured!",
-          description: "Failed to send the Message",
+          title: "Failed to send the Message!",
+          description: "Please Refresh Page...",
           status: "error",
           duration: 5000,
           isClosable: true,

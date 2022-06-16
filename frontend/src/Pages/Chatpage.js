@@ -4,22 +4,27 @@ import Chatbox from "../components/Chatbox";
 import MyChats from "../components/MyChats";
 import SideDrawer from "../components/miscellaneous/SideDrawer";
 import { ChatState } from "../Context/ChatProvider";
+import { useHistory } from "react-router-dom";
 
 const Chatpage = () => {
   const loggedUser = JSON.parse(localStorage.getItem("userInfo"));
   const [fetchAgain, setFetchAgain] = useState(false);
   const { user, setUser } = ChatState();
+  const history = useHistory();
 
-  console.log(user);
+  // console.log(user);
 
   useEffect(() => {
+    if (!loggedUser) {
+      history.push("/");
+    }
     if (loggedUser && !user) {
       setUser(loggedUser);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(user);
+  // console.log(user);
 
   return (
     <div style={{ width: "100%" }}>

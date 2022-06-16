@@ -80,14 +80,18 @@ const Login = (props) => {
         config
       );
       // console.log("Data..");
-      console.log(data);
+      console.log("Your OTP: " + data.otp);
       localStorage.setItem("userTempInfo", JSON.stringify(data));
       setLoading({ ...loading, sendOtp: false });
       setHidden(false);
       setIsDisabled(false);
     } catch (error) {
+      let title = "";
+
+      if (!error.response.data.data) title = error.response.data;
+      else title = error.response.data.data;
       toast({
-        title: `${error.response.data.msg}`,
+        title: `${title}`,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -164,12 +168,13 @@ const Login = (props) => {
       localStorage.setItem("accessToken", JSON.stringify(userAccessToken));
       localStorage.setItem("refreshToken", JSON.stringify(userRefreshToken));
       localStorage.setItem("userInfo", JSON.stringify(data));
+      localStorage.removeItem("userTempInfo");
       setLoading({ ...loading, login: false });
       history.push("/chats");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast({
-        title: `${error.response.data.msg}`,
+        title: `${error.response.data.data}`,
         status: "error",
         duration: 5000,
         isClosable: true,

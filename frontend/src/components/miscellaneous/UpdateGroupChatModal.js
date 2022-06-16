@@ -53,8 +53,8 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       setSearchResult(data);
     } catch (error) {
       toast({
-        title: "Error Occured!",
-        description: "Failed to Load the Search Results",
+        title: "Failed to Load the Search Results!",
+        description: "Please Refresh Page...",
         status: "error",
         duration: 5000,
         isClosable: true,

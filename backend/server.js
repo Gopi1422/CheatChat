@@ -5,10 +5,11 @@ const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
-const { path } = require("express/lib/application");
+const path = require("path");
 const caller = require("./helpers/caller");
 const logger = require("./config/logger");
 const { authenticateUser } = require("./middlewares/authMiddleware");
+const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
 
 const app = express();
 dotenv.config();
@@ -47,25 +48,25 @@ app.use((error, req, res, next) => {
 
 // --------------------------deployment------------------------------
 
-// const __dirname1 = path.resolve();
+const __dirname1 = path.resolve();
 // const __dirname1 = path.resolve;
 
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static(path.join(__dirname1, "/frontend/build")));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "/frontend/build")));
 
-//   app.get("*", (req, res) =>
-//     res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"))
-//   );
-// } else {
-//   app.get("/", (req, res) => {
-//     res.send("API is running..");
-//   });
-// }
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running..");
+  });
+}
 
 // --------------------------deployment------------------------------
 
-// app.use(notFound);
-// app.use(errorHandler);
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
@@ -74,7 +75,7 @@ const server = app.listen(PORT, console.log(`Server running on PORT ${PORT}`));
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost",
+    origin: "http://cheatchat.com",
     // credentials: true,
   },
 });

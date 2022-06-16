@@ -3,15 +3,23 @@ const logger = require("../config/logger");
 const caller = require("./caller");
 
 const authSchema = joi.object({
-  email: joi.string().email().lowercase().required(),
-  password: joi.string().min(4).required(),
+  phone: joi
+    .string()
+    .regex(/^[0-9]{10}$/)
+    .messages({ "string.pattern.base": `Phone number must have 10 digits.` })
+    .required(),
 });
 
 const registerUserSchema = joi.object({
   name: joi.string().max(100).required(),
   email: joi.string().email().lowercase().required(),
-  password: joi.string().min(4).required(),
+  phone: joi
+    .string()
+    .regex(/^[0-9]{10}$/)
+    .messages({ "string.pattern.base": `Phone number must have 10 digits.` })
+    .required(),
 });
+
 async function validator(validationSchema, req, res) {
   try {
     const result = await validationSchema.validateAsync(req.body);

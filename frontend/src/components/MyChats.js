@@ -8,24 +8,22 @@ import ChatLoading from "./ChatLoading";
 import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { Button } from "@chakra-ui/react";
 import { ChatState } from "../Context/ChatProvider";
-// import { useHistory } from "react-router-dom";
 
 const MyChats = ({ fetchAgain }) => {
   // const [loggedUser, setLoggedUser] = useState();
-  const loggedUser = JSON.parse(localStorage.getItem("userInfo"));
+  // const loggedUser = JSON.parse(localStorage.getItem("userInfo"));
 
   const { selectedChat, setSelectedChat, user, setUser, chats, setChats } =
     ChatState();
 
   const toast = useToast();
-  // const history = useHistory();
 
   // console.log(user._id);
   // console.log(loggedUser._id);
 
-  const fetchChats = async () => {
+  const fetchChats = async (loggedUser) => {
     // console.log(user._id);
-    // console.log(loggedUser._id);
+    // console.log(loggedUser.accessToken);
     try {
       const config = {
         headers: {
@@ -34,26 +32,28 @@ const MyChats = ({ fetchAgain }) => {
       };
 
       const { data } = await axios.get("/api/chat", config);
-      // console.log(data);
       setChats(data);
-    } catch (error) {
+    } catch (err) {
+      // console.log(err);
       toast({
-        title: `${error.response.data.msg}`,
-        description: "Failed to Load the chats",
+        title: "Failed to Load the chats!",
+        description: "Please Refresh Page...",
         status: "error",
         duration: 5000,
         isClosable: true,
         position: "bottom-left",
       });
-      // history.push("/");
     }
   };
 
   useEffect(() => {
+    const loggedUser = JSON.parse(localStorage.getItem("userInfo"));
     setUser(loggedUser);
-    fetchChats();
+    fetchChats(loggedUser);
     // eslint-disable-next-line
   }, [fetchAgain]);
+
+  // console.log(error);
 
   // console.log(user._id);
   // console.log(loggedUser._id);
@@ -119,7 +119,7 @@ const MyChats = ({ fetchAgain }) => {
                 {/* {selectedChat?.users[1].name} */}
                 <Text>
                   {!chat.isGroupChat
-                    ? getSender(loggedUser, chat.users)
+                    ? getSender(user, chat.users)
                     : chat.chatName}
                 </Text>
                 {chat.latestMessage && (
