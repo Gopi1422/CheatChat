@@ -34,6 +34,7 @@ const Login = (props) => {
   const toast = useToast();
   const history = useHistory();
   const [hidden, setHidden] = useState(true);
+  let isGuest = false;
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -43,7 +44,7 @@ const Login = (props) => {
   const sendOtp = async () => {
     setLoading({ ...loading, sendOtp: true });
     if (
-      (!isSignUp && !form.phone) ||
+      (!isSignUp && !form.email) ||
       (isSignUp && (!form.phone || !form.email || !form.phone))
     ) {
       toast({
@@ -67,6 +68,7 @@ const Login = (props) => {
         },
       };
       // console.log(form.code + form.phone);
+      // console.log(form.email);
       // await axios.get("/auth/test", {}, config);
 
       const { data } = await axios.post(
@@ -79,8 +81,7 @@ const Login = (props) => {
         },
         config
       );
-      // console.log("Data..");
-      console.log("Your OTP: " + data.otp);
+      // console.log("Your OTP: " + data.otp);
       localStorage.setItem("userTempInfo", JSON.stringify(data));
       setLoading({ ...loading, sendOtp: false });
       setHidden(false);
@@ -92,6 +93,7 @@ const Login = (props) => {
       else title = error.response.data.data;
       toast({
         title: `${title}`,
+        description: "Failed to send OTP!!",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -101,12 +103,20 @@ const Login = (props) => {
     }
   };
 
+  const guestLogin = async () => {
+    isGuest = true;
+
+    // console.log(isGuest);
+
+    submitHandler();
+  };
+
   const submitHandler = async () => {
-    const userInfo = await JSON.parse(localStorage.getItem("userTempInfo"));
+    let userInfo = await JSON.parse(localStorage.getItem("userTempInfo"));
     // console.log(userInfo);
     setLoading({ ...loading, login: true });
 
-    if (!userInfo) {
+    if (!userInfo && !isGuest) {
       toast({
         title: "User Information can't be retrieved!!",
         status: "warning",
@@ -117,7 +127,7 @@ const Login = (props) => {
       setLoading({ ...loading, login: false });
     }
 
-    if (!form.otp) {
+    if (!form.otp && !isGuest) {
       toast({
         title: "Please fill all the field..",
         status: "warning",
@@ -128,7 +138,19 @@ const Login = (props) => {
       setLoading({ ...loading, login: false });
       return;
     }
+
+    if (isGuest) {
+      userInfo = {
+        name: "Guest User",
+        phone: "+911234567890",
+        email: "guest@gmail.com",
+        hash: "",
+        otp: "",
+        isLogin: "guest",
+      };
+    }
     try {
+      // console.log(userInfo);
       const config = {
         headers: {
           "Content-type": "application/json",
@@ -172,9 +194,10 @@ const Login = (props) => {
       setLoading({ ...loading, login: false });
       history.push("/chats");
     } catch (error) {
-      // console.log(error);
+      console.log(error.response);
       toast({
         title: `${error.response.data.data}`,
+        description: "Failed to verify OTP!!",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -196,38 +219,39 @@ const Login = (props) => {
               onChange={handleChange}
             />
           </FormControl>
-          <FormControl id="email" isRequired>
-            <FormLabel>Email</FormLabel>
-            <Input
-              name="email"
-              placeholder="Enter Your Email"
-              onChange={handleChange}
-            />
+          <FormControl id="phone" isRequired>
+            <FormLabel>Phone No.</FormLabel>
+            <HStack spacing="5px">
+              {/* placeholder="Select Code" */}
+              <Select
+                name="code"
+                defaultValue="+91"
+                width="8rem"
+                onChange={handleChange}
+              >
+                <option value="+91">+91</option>
+                <option value="+10">+10</option>
+                <option value="+88">+88</option>
+              </Select>
+              <Input
+                name="phone"
+                type="number"
+                placeholder="Enter Your phone number"
+                onChange={handleChange}
+              />
+            </HStack>
           </FormControl>
         </>
       )}
-      <FormControl id="login_phone" isRequired>
-        <FormLabel>Phone No.</FormLabel>
-        <HStack spacing="5px">
-          {/* placeholder="Select Code" */}
-          <Select
-            name="code"
-            defaultValue="+91"
-            width="8rem"
-            onChange={handleChange}
-          >
-            <option value="+91">+91</option>
-            <option value="+10">+10</option>
-            <option value="+88">+88</option>
-          </Select>
-          <Input
-            name="phone"
-            type="number"
-            placeholder="Enter Your phone number"
-            onChange={handleChange}
-          />
-        </HStack>
+      <FormControl id="email" isRequired>
+        <FormLabel>Email</FormLabel>
+        <Input
+          name="email"
+          placeholder="Enter Your Email"
+          onChange={handleChange}
+        />
       </FormControl>
+
       <Button
         colorScheme="blue"
         width="50%"
@@ -279,11 +303,9 @@ const Login = (props) => {
           variant="solid"
           colorScheme="red"
           width="100%"
-          onClick={() => {
-            // setPhone("123456789");
-          }}
+          onClick={guestLogin}
         >
-          Get Guest User Credentials
+          Guest User Login
         </Button>
       )}
     </VStack>

@@ -28,8 +28,8 @@ const authenticateUser = asyncHandler(async (req, res, next) => {
           process.env.JWT_AUTH_TOKEN,
           async (err, decodedData) => {
             if (decodedData) {
-              const phone = decodedData.data;
-              req.user = await User.findOne({ phone: phone });
+              const email = decodedData.data;
+              req.user = await User.findOne({ email: email });
               // console.log(phone);
               next();
             } else if (err.name === "TokenExpiredError") {
