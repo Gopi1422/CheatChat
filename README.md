@@ -101,19 +101,37 @@ Open any browser and run project on http://localhost
   
 # Features
 
-Authenticaton
-
-Real Time Chatting with Typing indicators
-
-One to One chat
-
-Search Users
-
-Create Group Chats
-
-Add or Remove users from group
-
-View Other user Profile
+#### Authenticaton
+Login:
 
 
+![Output-1](https://github.com/Gopi1422/CheatChat/blob/651c5d5566a987add57e35f857e5005ee56a3caa/output/1.png)
+
+SignUp: 
+
+![Output-2](https://github.com/Gopi1422/CheatChat/blob/651c5d5566a987add57e35f857e5005ee56a3caa/output/2.png)
+
+#### Real Time Chatting with Typing indicators
+
+![Output-4](https://github.com/Gopi1422/CheatChat/blob/651c5d5566a987add57e35f857e5005ee56a3caa/output/4.png)
+
+#### One to One chat
+
+![Output-3](https://github.com/Gopi1422/CheatChat/blob/651c5d5566a987add57e35f857e5005ee56a3caa/output/3.png)
+
+#### Search Users
+
+![Output-8](https://github.com/Gopi1422/CheatChat/blob/651c5d5566a987add57e35f857e5005ee56a3caa/output/8.png)
+
+#### Create Group Chats
+
+![Output-5](https://github.com/Gopi1422/CheatChat/blob/651c5d5566a987add57e35f857e5005ee56a3caa/output/5.png)
+
+#### Add or Remove users from group
+
+![Output-6](https://github.com/Gopi1422/CheatChat/blob/651c5d5566a987add57e35f857e5005ee56a3caa/output/6.png)
+
+#### View Other user Profile
+
+![Output-9](https://github.com/Gopi1422/CheatChat/blob/651c5d5566a987add57e35f857e5005ee56a3caa/output/9.png)
   
